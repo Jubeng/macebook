@@ -14,23 +14,22 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('username')->unique();
-            $table->string('email')->unique();;
-            $table->string('address_street');
-            $table->string('address_suite');
-            $table->string('address_city');
-            $table->string('address_zipcode');
-            $table->float('address_geo_lat', 8, 6);
-            $table->float('address_geo_lng', 9, 6);
-            $table->string('phone');
-            $table->string('website');
-            $table->string('company_name');
-            $table->string('company_catchPhrase');
-            $table->string('company_bs');
-            $table->timestamps();
+            $table->string('name', 255)->required();
+            $table->string('username', 255)->unique()->required();
+            $table->string('email', 255)->unique()->required();
+            $table->string('address_street', 255)->required();
+            $table->string('address_suite', 255)->required();
+            $table->string('address_city', 255)->required();
+            $table->string('address_zipcode', 10)->required();
+            $table->float('address_geo_lat', 8, 6)->required();
+            $table->float('address_geo_lng', 9, 6)->required();
+            $table->string('phone', 10)->required();
+            $table->string('website', 255)->required();
+            $table->string('company_name', 255)->required();
+            $table->string('company_catchPhrase', 500)->required();
+            $table->string('company_bs', 255)->required();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
 
         DB::table('users')->insert([

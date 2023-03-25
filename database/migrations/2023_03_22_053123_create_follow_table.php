@@ -13,12 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('follow', function (Blueprint $table) {
-            $table->increments('follow_id');
-            $table->string('follower_id');
-            $table->string('followed_id');
-            $table->timestamps();
+            $table->id('follow_id');
+            $table->string('follower_id', 10)->required();
+            $table->string('followed_id', 10)->required();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 
