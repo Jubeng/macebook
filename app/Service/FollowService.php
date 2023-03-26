@@ -50,10 +50,10 @@ class FollowService extends BaseService
     public function followUser(array $aFollowDetails): array
     {
         try {
-            $isValidFollowerId = $this->oUserModel->checkIfUserExist($aFollowDetails['follower_id']);
-            $isValidFollowedId = $this->oUserModel->checkIfUserExist($aFollowDetails['followed_id']);
-            if ($isValidFollowerId !== true || $isValidFollowedId !== true) {
-                return $this->generateResponse(ConstantsLibrary::CODE_400, 'Please use valid IDs.');
+            $aValidIds = $this->checkIfUserExist($aFollowDetails);
+
+            if ($aValidIds['code'] === ConstantsLibrary::CODE_400) {
+                return $aValidIds;
             }
 
             $bFollowed = $this->checkIfUserIsFollowed($aFollowDetails);
@@ -64,11 +64,7 @@ class FollowService extends BaseService
             if ($oInsertResponse !== 1) {
                 return $this->generateResponse(ConstantsLibrary::CODE_400, ConstantsLibrary::GENERIC_ERROR_MESSAGE);
             }
-            $aUserDetails = json_decode($this->oUserModel->searchUsers($aFollowDetails['followed_id']), true);
-            if (count($aUserDetails) < 1) {
-                return $this->generateResponse(ConstantsLibrary::CODE_400, ConstantsLibrary::GENERIC_ERROR_MESSAGE);
-            }
-            return $this->generateResponse(ConstantsLibrary::CODE_200,'You are now following ' . $aUserDetails[0]['username']);
+            return $this->generateResponse(ConstantsLibrary::CODE_200,'You are now following the user.');
         } catch (Exception $oException) {
             return $this->generateResponse(ConstantsLibrary::CODE_400, ConstantsLibrary::GENERIC_ERROR_MESSAGE);
         }
@@ -83,11 +79,16 @@ class FollowService extends BaseService
     public function unfollowUser(array $aFollowDetails): array
     {
         try {
+            $aValidIds = $this->checkIfUserExist($aFollowDetails);
+
+            if ($aValidIds['code'] === ConstantsLibrary::CODE_400) {
+                return $aValidIds;
+            }
             $oDeleteResponse = $this->oFollowModel->deleteFollowing($aFollowDetails);
             if ($oDeleteResponse === "0") {
                 return $this->generateResponse(ConstantsLibrary::CODE_200, 'You are not following this user.');
             }
-            return $this->generateResponse(ConstantsLibrary::CODE_200, 'You now unfollowed the user.');
+            return $this->generateResponse(ConstantsLibrary::CODE_200, 'You now unfollowed this user.');
         } catch  (Exception $oException) {
             return $this->generateResponse(ConstantsLibrary::CODE_400, ConstantsLibrary::GENERIC_ERROR_MESSAGE);
         }
@@ -125,5 +126,23 @@ class FollowService extends BaseService
     private function checkIfUserIsFollowed(array $aFollowDetails): bool
     {
         return $this->oFollowModel->checkIfFollowed($aFollowDetails);
+    }
+
+        
+    /**
+     * Check if the user ids exist in the database
+     *
+     * @param  array $aFollowDetails
+     * @return array
+     */
+    private function checkIfUserExist(array $aFollowDetails): array
+    {
+        $isValidFollowerId = $this->oUserModel->checkIfUserExist($aFollowDetails['follower_id']);
+        $isValidFollowedId = $this->oUserModel->checkIfUserExist($aFollowDetails['followed_id']);
+        if ($isValidFollowerId !== true || $isValidFollowedId !== true) {
+            return $this->generateResponse(ConstantsLibrary::CODE_400, 'User doesn\'t exist.');
+        }
+
+        return $this->generateResponse(ConstantsLibrary::CODE_200, 'User exist.');
     }
 }
