@@ -1,0 +1,154 @@
+{
+	"info": {
+		"_postman_id": "a4a086b5-de9f-4ec1-9dc2-1f39a5e4ab78",
+		"name": "Macebook",
+		"description": "Mini-Facebook is a mini social media API to connect with colleagues, friends, and like-minded people.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5085747"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json; charset=utf-8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://joventp.online/get-users",
+							"protocol": "https",
+							"host": [
+								"joventp",
+								"online"
+							],
+							"path": [
+								"get-users"
+							]
+						},
+						"description": "fetch all the users in the database"
+					},
+					"response": []
+				}
+			],
+			"description": "User related requests"
+		},
+		{
+			"name": "Follow",
+			"item": [
+				{
+					"name": "Follow a user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "follower_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "followed_id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://joventp.online/follow",
+							"protocol": "https",
+							"host": [
+								"joventp",
+								"online"
+							],
+							"path": [
+								"follow"
+							]
+						},
+						"description": "Follow a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow a user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "follower_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "followed_id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://joventp.online/unfollow",
+							"protocol": "https",
+							"host": [
+								"joventp",
+								"online"
+							],
+							"path": [
+								"unfollow"
+							]
+						},
+						"description": "unfollows a user"
+					},
+					"response": []
+				},
+				{
+					"name": "Search follower by name",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "le",
+									"type": "text"
+								},
+								{
+									"key": "followed_id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://joventp.online/follower-search",
+							"protocol": "https",
+							"host": [
+								"joventp",
+								"online"
+							],
+							"path": [
+								"follower-search"
+							]
+						},
+						"description": "Fetch all the followers based on the given name"
+					},
+					"response": []
+				}
+			],
+			"description": "User related requests"
+		}
+	]
+}
